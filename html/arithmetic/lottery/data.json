@@ -1,0 +1,50 @@
+[{
+  "label":"技能书",
+  "amount":1,
+  "weight": 1
+},{
+  "label":"金币",
+  "amount":1000,
+  "weight": 5
+},{
+  "label":"宝石",
+  "amount":1,
+  "weight": 2
+},{
+  "label":"体力药水",
+  "amount":1,
+  "weight": 4
+},{
+  "label":"生命药水",
+  "amount":2,
+  "weight": 4
+},{
+  "label":"木材",
+  "amount":100,
+  "weight": 5
+},{
+  "label":"石材",
+  "amount":50,
+  "weight": 5
+},{
+  "label":"黄金",
+  "amount":10,
+  "weight": 9
+},{
+  "label":"珠宝",
+  "amount":2,
+  "weight": 3
+},{
+  "label":"洗点书",
+  "amount":1,
+  "weight": 1
+},{
+  "label":"蓝瓶",
+  "amount":3,
+  "weight": 1
+},{
+  "label":"木材",
+  "amount":300,
+  "weight": 2
+}
+]

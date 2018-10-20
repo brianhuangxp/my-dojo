@@ -1,7 +1,6 @@
 rootProject.name = 'my-dojo'
 
 include "arithmetic/blackJack"
-include "arithmetic/nBlock"
 
 include "strategy/lettory-demo"
 include "strategy/lettory-app"
