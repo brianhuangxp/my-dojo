@@ -12,7 +12,7 @@ window.onload = function () {
         let charElement = document.getElementById("message");
         charElement.innerText = "";
         setTimeout(() => {
-            charElement.innerText = char;
+            charElement.innerHTML = char;
         }, settings.swtichDelay);
     });
     eventBus.addEvent(GameEvents.ShowResult, (result) => {
@@ -22,11 +22,6 @@ window.onload = function () {
         resultElement.innerHTML = result;
     });
     document.onkeypress = game.input.bind(game);
-
-    function switchGameButtonGroup(isPlaying) {
-        triggerClassByClass("playingStatus", "show", isPlaying);
-        triggerClassByClass("resultStatus", "show", !isPlaying);
-    }
 };
 
 let triggerClassByClass = function (eleClass, targetClass, trigger) {
@@ -46,7 +41,7 @@ let rePlay = function () {
 };
 
 let showSettings = function () {
-    triggerClassByClass("result", "show", false);
+    // triggerClassByClass("result", "show", false);
     triggerClassByClass("settings", "show", true);
     triggerClassByClass("resultStatus", "show", false);
 };
@@ -69,3 +64,14 @@ let submitSettings = function () {
         return document.getElementById(eleId).value;
     };
 };
+
+let stop = function () {
+    game.reset();
+
+    switchGameButtonGroup(false);
+};
+
+function switchGameButtonGroup(isPlaying) {
+    triggerClassByClass("playingStatus", "show", isPlaying);
+    triggerClassByClass("resultStatus", "show", !isPlaying);
+}

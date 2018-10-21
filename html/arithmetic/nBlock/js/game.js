@@ -83,9 +83,9 @@ let GameSystem = (function (eventBus) {
             settings = settings || {};
             settings.swtichDelay = 200; //display each char delay time, unit millisecond.
 
-            settings.block_n = settings.block_n || 1;
-            settings.delay = settings.delay || 1000;//the display time, unit millisecond.
-            settings.symbolLength = settings.symbolLength || 10; //the length of random symbol
+            settings.block_n = settings.block_n || 2;
+            settings.delay = settings.delay || 3000;//the display time, unit millisecond.
+            settings.symbolLength = settings.symbolLength || 20; //the length of random symbol
 
             this._settings = settings;
             this._minBlockFactor = 1 / 5;
@@ -258,24 +258,52 @@ let GameSystem = (function (eventBus) {
             return false;
         }
 
+        _stepPlay() {
+            let gameData = this._gameData;
+            let symbol = gameData.symbol;
+            symbol.index++;
+            if (this.isGameOver() || !gameData.hasNextChar()) {
+                eventBus.fire(GameEvents.ShowResult, gameData.showResult());
+                clearInterval(this._timer);
+                return;
+            }
+            if (gameData.hasNextChar()) {
+                let char = gameData.readChar(symbol.index);
+                eventBus.fire(GameEvents.ShowChar, char);
+            }
+        }
+
         play() {
             eventBus.fire(GameEvents.GameStart);
 
             let gameData = this._gameData;
             let settings = gameData.settings;
-            let symbol = gameData.symbol;
-            this._timer = setInterval(() => {
-                symbol.index++;
-                if (this.isGameOver() || !gameData.hasNextChar()) {
-                    eventBus.fire(GameEvents.ShowResult, gameData.showResult());
-                    clearInterval(this._timer);
-                    return;
+            getReady(()=>{
+                this._stepPlay();
+                this._timer = setInterval(() => {
+                    this._stepPlay();
+                }, settings.delay);
+            });
+
+            function getReady(timerFunc) {
+                let readyStr = ["3", "2", "1"];
+                let idx = 1;
+                let size = readyStr.length;
+                eventBus.fire(GameEvents.ShowChar, getMessage(readyStr[0]));
+                let timer = setInterval(()=> {
+                    if(size <= idx) {
+                        clearInterval(timer);
+                        timerFunc();
+                        return;
+                    }
+                    eventBus.fire(GameEvents.ShowChar, getMessage(readyStr[idx]));
+                    idx++;
+                }, 1000);
+
+                function getMessage(msg) {
+                    return `<span style="color: red;">${msg}</span>`;
                 }
-                if (gameData.hasNextChar()) {
-                    let char = gameData.readChar(symbol.index);
-                    eventBus.fire(GameEvents.ShowChar, char);
-                }
-            }, settings.delay);
+            }
         }
 
         reset() {
